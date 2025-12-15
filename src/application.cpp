@@ -478,9 +478,7 @@ void Application::scrollCallback(GLFWwindow* window, double /* xoffset */, doubl
 }
 
 void Application::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    (void)key; // Unused
     (void)scancode; // Unused
-    (void)action; // Unused
     (void)mods; // Unused
 
     Application* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
@@ -488,14 +486,15 @@ void Application::keyCallback(GLFWwindow* window, int key, int scancode, int act
         return;
     }
 
-    // Check key state directly - matches original behavior
-    if (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
-        app->mouseFocus_ = !app->mouseFocus_;
-        app->uiController_->setMouseFocus(app->mouseFocus_);
-        app->firstMouse_ = true;
-    }
-    if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
-        app->settings_->setUseHeatmap(!app->settings_->getUseHeatmap());
+    // Only process on key press, not release or repeat
+    if (action == GLFW_PRESS) {
+        if (key == GLFW_KEY_GRAVE_ACCENT) {
+            app->mouseFocus_ = !app->mouseFocus_;
+            app->uiController_->setMouseFocus(app->mouseFocus_);
+            app->firstMouse_ = true;
+        } else if (key == GLFW_KEY_H) {
+            app->settings_->setUseHeatmap(!app->settings_->getUseHeatmap());
+        }
     }
 }
 
