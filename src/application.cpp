@@ -221,7 +221,7 @@ void Application::handleKeyboardInput() {
     if (glfwGetKey(window_, GLFW_KEY_E) == GLFW_PRESS) {
         camera_->processKeyboard(CameraMovement::ROLL_RIGHT, deltaTime_);
     }
-    if (glfwGetKey(window_, GLFW_KEY_SPACE) == GLFW_PRESS || glfwGetKey(window_, GLFW_KEY_Y) == GLFW_PRESS) {
+    if (glfwGetKey(window_, GLFW_KEY_SPACE) == GLFW_PRESS || glfwGetKey(window_, GLFW_KEY_C) == GLFW_PRESS) {
         camera_->processKeyboard(CameraMovement::UP, deltaTime_);
     }
     if (glfwGetKey(window_, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS || glfwGetKey(window_, GLFW_KEY_X) == GLFW_PRESS) {

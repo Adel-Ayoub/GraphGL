@@ -206,7 +206,7 @@ void UIController::renderControlsPopup() {
     if (ImGui::BeginPopupModal("Controls", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
         ImGui::SetItemDefaultFocus();
         ImGui::Text("WASD: move (always enabled)");
-        ImGui::Text("Space/Y: Up  |  Left Control/X: Down");
+        ImGui::Text("Space/C: Up  |  Left Control/X: Down");
         ImGui::Text("Q/E: roll left/right");
         ImGui::Text("I: reset position to (0,0,12)");
         ImGui::Text("`: mouse look toggle (cursor lock)");
