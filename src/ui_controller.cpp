@@ -205,13 +205,12 @@ void UIController::renderControlsPopup() {
 
     if (ImGui::BeginPopupModal("Controls", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
         ImGui::SetItemDefaultFocus();
-        ImGui::Text("WASD to move");
-        ImGui::Text("Left Control: Down\nSpace: Up");
-        ImGui::Text("Q: rotate left\nE: rotate right");
-        ImGui::Text("`: toggle keyboard and mouse input");
-        ImGui::Text("TAB: fallback toggle keyboard and mouse input");
-        ImGui::Text("H: toggle heatmap");
-        ImGui::Text("Escape: close program");
+        ImGui::Text("WASD: move (always enabled)");
+        ImGui::Text("Left Control: Down  |  Space: Up");
+        ImGui::Text("Q/E: roll left/right");
+        ImGui::Text("`: mouse look toggle (cursor lock)");
+        ImGui::Text("TAB: fallback mouse look toggle");
+        ImGui::Text("H: toggle heatmap  |  Escape: quit");
         ImGui::Separator();
         
         if (ImGui::Button("Close")) {

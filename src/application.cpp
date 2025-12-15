@@ -193,10 +193,8 @@ void Application::processInput() {
         return;
     }
 
-    // Camera controls only work when camera has focus
-    if (mouseFocus_) {
-        handleKeyboardInput();
-    }
+    // Always allow keyboard movement (even when UI has focus)
+    handleKeyboardInput();
 }
 
 void Application::handleKeyboardInput() {
