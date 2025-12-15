@@ -56,6 +56,7 @@ public:
     void processKeyboard(CameraMovement direction, float deltaTime);
     void processMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
     void processMouseScroll(float yoffset);
+    void reset(const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f));
 
 private:
     glm::vec3 position_;

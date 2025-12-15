@@ -227,6 +227,9 @@ void Application::handleKeyboardInput() {
     if (glfwGetKey(window_, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
         camera_->processKeyboard(CameraMovement::DOWN, deltaTime_);
     }
+    if (glfwGetKey(window_, GLFW_KEY_I) == GLFW_PRESS) {
+        camera_->reset(glm::vec3(0.0f, 0.0f, 0.0f));
+    }
 }
 
 void Application::render() {

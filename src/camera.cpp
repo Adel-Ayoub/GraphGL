@@ -100,6 +100,16 @@ void Camera::processMouseScroll(float yoffset) {
     setZoom(zoom_);
 }
 
+void Camera::reset(const glm::vec3& position) {
+    position_ = position;
+    rightAngle_ = 0.0f;
+    upAngle_ = 0.0f;
+    rollAngle_ = 0.0f;
+    zoom_ = DEFAULT_ZOOM;
+    orientation_ = glm::quat(0, 0, 0, -1);
+    updateCameraVectors();
+}
+
 void Camera::setZoom(float zoom) {
     zoom_ = std::clamp(zoom, MIN_ZOOM, MAX_ZOOM);
 }
