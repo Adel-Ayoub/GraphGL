@@ -65,52 +65,10 @@ void UIController::shutdown() {
 }
 
 void UIController::renderFrame() {
-    if (!initialized_ || !window_) {
-        return;
-    }
-
-    // Set cursor mode BEFORE ImGui processes the frame
-    // This ensures the cursor state is correct before ImGui takes control
-    int desiredCursorMode;
-    if (!mouseFocus_) {
-        desiredCursorMode = GLFW_CURSOR_NORMAL;
-    } else {
-        desiredCursorMode = GLFW_CURSOR_DISABLED;
-    }
-    
-    // Only update cursor mode if it changed (avoids redundant calls)
-    if (currentCursorMode_ != desiredCursorMode) {
-        glfwSetInputMode(window_, GLFW_CURSOR, desiredCursorMode);
-        currentCursorMode_ = desiredCursorMode;
-        
-        #ifdef __APPLE__
-        // On macOS, force cursor visibility by ensuring window has focus
-        if (desiredCursorMode == GLFW_CURSOR_NORMAL) {
-            glfwFocusWindow(window_);
-        }
-        #endif
-    }
-
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-    ImGuiIO& io = ImGui::GetIO();
-    
-    // Handle mouse/keyboard focus
-    if (!mouseFocus_) {
-        io.WantCaptureMouse = true;
-        io.WantCaptureKeyboard = true;
-    } else {
-        io.WantCaptureMouse = false;
-        io.WantCaptureKeyboard = false;
-    }
-
+    // This method is deprecated - ImGui setup is now done in Application::render()
+    // Keeping for compatibility but it should not be called
     renderMainWindow();
     renderControlsPopup();
-
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 void UIController::renderMainWindow() {

@@ -54,6 +54,10 @@ public:
     bool getMouseFocus() const { return mouseFocus_; }
     void setMouseFocus(bool focus) { mouseFocus_ = focus; }
 
+    // Public rendering methods (called from Application)
+    void renderMainWindow();
+    void renderControlsPopup();
+
 private:
     GLFWwindow* window_;
     Settings* settings_;
@@ -81,12 +85,10 @@ private:
 
     // UI rendering methods
     void renderMainMenuBar();
-    void renderControlsPopup();
     void renderEquationInput(Equation& equation, size_t index);
     void renderPointInput(Point& point, size_t index);
     void renderEquations();
     void renderPoints();
-    void renderMainWindow();
 };
 
 } // namespace graphgl
