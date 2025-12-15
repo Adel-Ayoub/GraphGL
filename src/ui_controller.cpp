@@ -209,6 +209,7 @@ void UIController::renderControlsPopup() {
         ImGui::Text("Left Control: Down\nSpace: Up");
         ImGui::Text("Q: rotate left\nE: rotate right");
         ImGui::Text("`: toggle keyboard and mouse input");
+        ImGui::Text("TAB: fallback toggle keyboard and mouse input");
         ImGui::Text("H: toggle heatmap");
         ImGui::Text("Escape: close program");
         ImGui::Separator();

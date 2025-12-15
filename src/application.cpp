@@ -529,10 +529,11 @@ void Application::keyCallback(GLFWwindow* window, int key, int scancode, int act
 
     // Only act on key press (avoids rapid toggling)
     if (action == GLFW_PRESS) {
-        if (key == GLFW_KEY_GRAVE_ACCENT) {
+        if (key == GLFW_KEY_GRAVE_ACCENT || key == GLFW_KEY_TAB) { // allow TAB as a fallback toggle
             app->mouseFocus_ = !app->mouseFocus_;
             app->uiController_->setMouseFocus(app->mouseFocus_);
             app->firstMouse_ = true;
+            glfwSetInputMode(window, GLFW_CURSOR, app->mouseFocus_ ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
         } else if (key == GLFW_KEY_H) {
             app->settings_->setUseHeatmap(!app->settings_->getUseHeatmap());
         }
