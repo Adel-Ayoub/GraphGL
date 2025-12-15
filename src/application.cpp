@@ -29,8 +29,6 @@ Application::Application()
     , mouseFocus_(false)
     , deltaTime_(0.0f)
     , lastFrame_(0.0f)
-    , graveKeyPressed_(false)
-    , hKeyPressed_(false)
 {
 }
 
@@ -480,7 +478,9 @@ void Application::scrollCallback(GLFWwindow* window, double /* xoffset */, doubl
 }
 
 void Application::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    (void)key; // Unused
     (void)scancode; // Unused
+    (void)action; // Unused
     (void)mods; // Unused
 
     Application* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
@@ -488,22 +488,15 @@ void Application::keyCallback(GLFWwindow* window, int key, int scancode, int act
         return;
     }
 
-    // Handle toggle keys - check key state directly with debouncing
-    bool gravePressed = (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS);
-    bool hPressed = (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS);
-
-    if (gravePressed && !app->graveKeyPressed_) {
+    // Check key state directly - matches original behavior
+    if (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
         app->mouseFocus_ = !app->mouseFocus_;
         app->uiController_->setMouseFocus(app->mouseFocus_);
-        // Reset first mouse to prevent jump when switching modes
         app->firstMouse_ = true;
     }
-    app->graveKeyPressed_ = gravePressed;
-
-    if (hPressed && !app->hKeyPressed_) {
+    if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
         app->settings_->setUseHeatmap(!app->settings_->getUseHeatmap());
     }
-    app->hKeyPressed_ = hPressed;
 }
 
 void Application::errorCallback(int error, const char* description) {
