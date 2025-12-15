@@ -10,6 +10,7 @@
 #include "equation_parser.h"
 #include "equation_generator.h"
 #include "equation.h"
+#include "../lib/imgui/imgui.h"
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -180,10 +181,13 @@ bool Application::shouldClose() const {
 }
 
 void Application::processInput() {
+    // ESCAPE always works regardless of focus mode
     if (glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window_, true);
+        return;
     }
 
+    // Camera controls only work when camera has focus
     if (mouseFocus_) {
         handleKeyboardInput();
     }
@@ -475,14 +479,18 @@ void Application::keyCallback(GLFWwindow* window, int key, int scancode, int act
     (void)mods; // Unused
 
     Application* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
-    if (!app || !app->settings_) {
+    if (!app || !app->settings_ || !app->uiController_) {
         return;
     }
 
+    // Toggle keys should always work, even when ImGui has focus
+    // These are system-level shortcuts
     if (action == GLFW_PRESS) {
         if (key == GLFW_KEY_GRAVE_ACCENT) {
             app->mouseFocus_ = !app->mouseFocus_;
             app->uiController_->setMouseFocus(app->mouseFocus_);
+            // Reset first mouse to prevent jump when switching modes
+            app->firstMouse_ = true;
         } else if (key == GLFW_KEY_H) {
             app->settings_->setUseHeatmap(!app->settings_->getUseHeatmap());
         }
