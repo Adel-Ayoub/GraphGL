@@ -163,7 +163,10 @@ void Application::run() {
         deltaTime_ = currentFrame - lastFrame_;
         lastFrame_ = currentFrame;
 
-        // Process input
+        // Poll events first to update input state
+        glfwPollEvents();
+
+        // Process input (before ImGui processes)
         processInput();
 
         // Render (which includes ImGui processing)
@@ -171,7 +174,6 @@ void Application::run() {
 
         // Swap buffers
         glfwSwapBuffers(window_);
-        glfwPollEvents();
     }
 }
 
