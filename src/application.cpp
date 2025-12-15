@@ -530,7 +530,7 @@ void Application::keyCallback(GLFWwindow* window, int key, int scancode, int act
 
     // Only act on key press (avoids rapid toggling)
     if (action == GLFW_PRESS) {
-        if (key == GLFW_KEY_GRAVE_ACCENT || key == GLFW_KEY_TAB) { // allow TAB as a fallback toggle
+        if (key == GLFW_KEY_GRAVE_ACCENT || key == GLFW_KEY_TAB || key == GLFW_KEY_M) { // add M toggle
             app->mouseFocus_ = !app->mouseFocus_;
             app->uiController_->setMouseFocus(app->mouseFocus_);
             app->firstMouse_ = true;

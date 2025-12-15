@@ -210,7 +210,7 @@ void UIController::renderControlsPopup() {
         ImGui::Text("Q/E: roll left/right");
         ImGui::Text("I: reset position to (0,0,12)");
         ImGui::Text("`: mouse look toggle (cursor lock)");
-        ImGui::Text("TAB: fallback mouse look toggle");
+        ImGui::Text("TAB/M: fallback mouse look toggle");
         ImGui::Text("H: toggle heatmap  |  Escape: quit");
         ImGui::Separator();
         
