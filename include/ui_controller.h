@@ -63,6 +63,7 @@ private:
 
     bool mouseFocus_;
     bool initialized_;
+    int currentCursorMode_;  // Track current cursor mode to avoid redundant calls
 
     // Input buffers
     char importFilepath_[256];

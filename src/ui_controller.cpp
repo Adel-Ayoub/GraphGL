@@ -17,6 +17,7 @@ UIController::UIController()
     , points_(nullptr)
     , mouseFocus_(false)
     , initialized_(false)
+    , currentCursorMode_(-1)  // Initialize to invalid value to force first update
 {
     importFilepath_[0] = '\0';
     exportFilepath_[0] = '\0';
@@ -43,6 +44,10 @@ bool UIController::initialize(GLFWwindow* window) {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
     
+    // Initialize cursor to visible state
+    glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    currentCursorMode_ = GLFW_CURSOR_NORMAL;
+    
     initialized_ = true;
     return true;
 }
@@ -64,25 +69,40 @@ void UIController::renderFrame() {
         return;
     }
 
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
     ImGuiIO& io = ImGui::GetIO();
     
-    // Handle mouse/keyboard focus
+    // Handle mouse/keyboard focus and cursor visibility
+    int desiredCursorMode;
     if (!mouseFocus_) {
         io.WantCaptureMouse = true;
         io.WantCaptureKeyboard = true;
         // Show cursor when UI has focus
-        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        desiredCursorMode = GLFW_CURSOR_NORMAL;
     } else {
         io.WantCaptureMouse = false;
         io.WantCaptureKeyboard = false;
         // Hide cursor when camera has focus (for FPS-style camera control)
-        // On macOS, GLFW_CURSOR_DISABLED hides cursor but still captures input
-        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        desiredCursorMode = GLFW_CURSOR_DISABLED;
     }
+    
+    // Only update cursor mode if it changed (avoids redundant calls)
+    if (currentCursorMode_ != desiredCursorMode) {
+        glfwSetInputMode(window_, GLFW_CURSOR, desiredCursorMode);
+        currentCursorMode_ = desiredCursorMode;
+    }
+
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+    
+    // On macOS, ensure cursor is visible when in UI mode
+    #ifdef __APPLE__
+    if (!mouseFocus_ && currentCursorMode_ == GLFW_CURSOR_NORMAL) {
+        // Ensure cursor is actually visible - sometimes GLFW needs a nudge on macOS
+        // This is a workaround for macOS cursor visibility issues
+        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+    #endif
 
     renderMainWindow();
     renderControlsPopup();
