@@ -228,7 +228,7 @@ void Application::handleKeyboardInput() {
         camera_->processKeyboard(CameraMovement::DOWN, deltaTime_);
     }
     if (glfwGetKey(window_, GLFW_KEY_I) == GLFW_PRESS) {
-        camera_->reset(glm::vec3(0.0f, 0.0f, 0.0f));
+        camera_->reset(); // defaults to (0,0,12)
     }
 }
 

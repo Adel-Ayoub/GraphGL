@@ -208,7 +208,7 @@ void UIController::renderControlsPopup() {
         ImGui::Text("WASD: move (always enabled)");
         ImGui::Text("Left Control: Down  |  Space: Up");
         ImGui::Text("Q/E: roll left/right");
-        ImGui::Text("I: reset position to (0,0,0)");
+        ImGui::Text("I: reset position to (0,0,12)");
         ImGui::Text("`: mouse look toggle (cursor lock)");
         ImGui::Text("TAB: fallback mouse look toggle");
         ImGui::Text("H: toggle heatmap  |  Escape: quit");
