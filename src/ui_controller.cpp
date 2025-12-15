@@ -74,10 +74,13 @@ void UIController::renderFrame() {
     if (!mouseFocus_) {
         io.WantCaptureMouse = true;
         io.WantCaptureKeyboard = true;
+        // Show cursor when UI has focus
         glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     } else {
         io.WantCaptureMouse = false;
         io.WantCaptureKeyboard = false;
+        // Hide cursor when camera has focus (for FPS-style camera control)
+        // On macOS, GLFW_CURSOR_DISABLED hides cursor but still captures input
         glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
 

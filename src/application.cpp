@@ -140,9 +140,9 @@ bool Application::initialize(int width, int height, const char* title) {
     // Add initial equation
     equations_.emplace_back();
 
-    // Set initial input mode
-    glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    mouseFocus_ = true;
+    // Set initial input mode - start with UI focus (cursor visible)
+    glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    mouseFocus_ = false;
 
     initialized_ = true;
     return true;

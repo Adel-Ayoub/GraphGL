@@ -41,21 +41,41 @@ INCLUDES = -I$(INCLUDE_DIR) \
            -I$(LIB_DIR)/stb \
            -I$(LIB_DIR)
 
-# Library paths and libraries
-LDFLAGS = -L/opt/homebrew/lib
-LIBS = -lglfw -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
+# Detect OS
+UNAME_S := $(shell uname -s)
+
+# Library paths and libraries - platform specific
+ifeq ($(UNAME_S),Darwin)
+    # macOS
+    LDFLAGS = -L/opt/homebrew/lib -L/usr/local/lib
+    LIBS = -lglfw -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
+else ifeq ($(UNAME_S),Linux)
+    # Linux
+    LDFLAGS = 
+    LIBS = -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
+else
+    # Windows (MinGW/MSYS2)
+    LDFLAGS = 
+    LIBS = -lglfw3 -lopengl32 -lgdi32
+endif
 
 # pkg-config for GLFW (if available)
 PKG_CONFIG = pkg-config
 GLFW_CFLAGS = $(shell $(PKG_CONFIG) --cflags glfw3 2>/dev/null || echo "")
-GLFW_LIBS = $(shell $(PKG_CONFIG) --libs glfw3 2>/dev/null || echo "-lglfw")
+GLFW_LIBS = $(shell $(PKG_CONFIG) --libs glfw3 2>/dev/null || echo "")
 
 # Override with pkg-config if available
 ifneq ($(GLFW_CFLAGS),)
     INCLUDES += $(GLFW_CFLAGS)
 endif
 ifneq ($(GLFW_LIBS),)
-    LIBS = $(GLFW_LIBS) -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
+    ifeq ($(UNAME_S),Darwin)
+        LIBS = $(GLFW_LIBS) -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
+    else ifeq ($(UNAME_S),Linux)
+        LIBS = $(GLFW_LIBS) -lGL -lX11 -lpthread -lXrandr -lXi -ldl
+    else
+        LIBS = $(GLFW_LIBS) -lopengl32 -lgdi32
+    endif
 endif
 
 # Set flags based on build mode
