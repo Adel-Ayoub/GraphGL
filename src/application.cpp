@@ -198,6 +198,13 @@ void Application::handleKeyboardInput() {
         return;
     }
 
+    // Check ImGui state - if it wants keyboard and we're not in camera focus mode, skip
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.WantCaptureKeyboard && !mouseFocus_) {
+        return; // Let ImGui handle keyboard input when UI has focus
+    }
+
+    // Camera movement keys - these work when camera has focus
     if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS) {
         camera_->processKeyboard(CameraMovement::FORWARD, deltaTime_);
     }
