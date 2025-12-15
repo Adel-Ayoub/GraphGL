@@ -41,7 +41,8 @@ bool UIController::initialize(GLFWwindow* window) {
     
     ImGui::StyleColorsDark();
     
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    // Do not let ImGui install its own callbacks; we manage callbacks in Application
+    ImGui_ImplGlfw_InitForOpenGL(window, false);
     ImGui_ImplOpenGL3_Init("#version 330");
     
     // Initialize cursor to visible state
