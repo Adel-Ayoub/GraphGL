@@ -80,10 +80,12 @@ bool Application::initialize(int width, int height, const char* title) {
     // Set context
     glfwMakeContextCurrent(window_);
 
-    // Set callbacks
+    // Set callbacks (we forward to ImGui ourselves; ImGui install_callbacks is false)
     glfwSetFramebufferSizeCallback(window_, framebufferSizeCallback);
     glfwSetCursorPosCallback(window_, mouseCallback);
     glfwSetScrollCallback(window_, scrollCallback);
+    glfwSetMouseButtonCallback(window_, mouseButtonCallback);
+    glfwSetCharCallback(window_, charCallback);
     glfwSetKeyCallback(window_, keyCallback);
     glfwSetWindowUserPointer(window_, this);
 
@@ -472,6 +474,7 @@ void Application::framebufferSizeCallback(GLFWwindow* window, int width, int hei
 
 void Application::mouseCallback(GLFWwindow* window, double xposIn, double yposIn) {
     Application* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
+    ImGui_ImplGlfw_CursorPosCallback(window, xposIn, yposIn);
     if (!app || !app->camera_ || !app->mouseFocus_) {
         return;
     }
@@ -496,12 +499,26 @@ void Application::mouseCallback(GLFWwindow* window, double xposIn, double yposIn
 
 void Application::scrollCallback(GLFWwindow* window, double /* xoffset */, double yoffset) {
     Application* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
+    ImGui_ImplGlfw_ScrollCallback(window, 0.0, yoffset);
     if (app && app->camera_) {
         app->camera_->processMouseScroll(static_cast<float>(yoffset));
     }
 }
 
+void Application::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+    ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
+    (void)window;
+    (void)button;
+    (void)action;
+    (void)mods;
+}
+
+void Application::charCallback(GLFWwindow* window, unsigned int codepoint) {
+    ImGui_ImplGlfw_CharCallback(window, codepoint);
+}
+
 void Application::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
     (void)scancode; // Unused
     (void)mods; // Unused
 

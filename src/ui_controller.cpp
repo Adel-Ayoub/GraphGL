@@ -41,7 +41,7 @@ bool UIController::initialize(GLFWwindow* window) {
     
     ImGui::StyleColorsDark();
     
-    // Do not let ImGui install its own callbacks; we manage callbacks in Application
+    // Do not let ImGui install its own callbacks; we forward them manually
     ImGui_ImplGlfw_InitForOpenGL(window, false);
     ImGui_ImplOpenGL3_Init("#version 330");
     
