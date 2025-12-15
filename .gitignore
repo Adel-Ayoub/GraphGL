@@ -1,0 +1,40 @@
+# Build artifacts
+build/
+*.o
+*.a
+*.so
+*.dylib
+*.exe
+*.zip
+
+# Object files anywhere (including lib/)
+**/*.o
+
+# Compiled binaries
+graphgl
+planar
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# CMake (if used in future)
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile.cmake
+
+# Test directory (reference implementation)
+test/
+
+# ImGui config
+imgui.ini
+
+# Temporary files
+*.tmp
+*.log
+
