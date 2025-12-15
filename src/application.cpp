@@ -23,12 +23,14 @@ Application::Application()
     , width_(1280)
     , height_(720)
     , initialized_(false)
-    , lastX_(640.0f)
+    ,     lastX_(640.0f)
     , lastY_(360.0f)
     , firstMouse_(true)
     , mouseFocus_(false)
     , deltaTime_(0.0f)
     , lastFrame_(0.0f)
+    , graveKeyPressed_(false)
+    , hKeyPressed_(false)
 {
 }
 
@@ -164,7 +166,7 @@ void Application::run() {
         // Process input
         processInput();
 
-        // Render
+        // Render (which includes ImGui processing)
         render();
 
         // Swap buffers
@@ -198,13 +200,7 @@ void Application::handleKeyboardInput() {
         return;
     }
 
-    // Check ImGui state - if it wants keyboard and we're not in camera focus mode, skip
-    ImGuiIO& io = ImGui::GetIO();
-    if (io.WantCaptureKeyboard && !mouseFocus_) {
-        return; // Let ImGui handle keyboard input when UI has focus
-    }
-
-    // Camera movement keys - these work when camera has focus
+    // Camera movement keys
     if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS) {
         camera_->processKeyboard(CameraMovement::FORWARD, deltaTime_);
     }
@@ -490,18 +486,22 @@ void Application::keyCallback(GLFWwindow* window, int key, int scancode, int act
         return;
     }
 
-    // Toggle keys should always work, even when ImGui has focus
-    // These are system-level shortcuts
-    if (action == GLFW_PRESS) {
-        if (key == GLFW_KEY_GRAVE_ACCENT) {
-            app->mouseFocus_ = !app->mouseFocus_;
-            app->uiController_->setMouseFocus(app->mouseFocus_);
-            // Reset first mouse to prevent jump when switching modes
-            app->firstMouse_ = true;
-        } else if (key == GLFW_KEY_H) {
-            app->settings_->setUseHeatmap(!app->settings_->getUseHeatmap());
-        }
+    // Handle toggle keys - check key state directly with debouncing
+    bool gravePressed = (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS);
+    bool hPressed = (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS);
+
+    if (gravePressed && !app->graveKeyPressed_) {
+        app->mouseFocus_ = !app->mouseFocus_;
+        app->uiController_->setMouseFocus(app->mouseFocus_);
+        // Reset first mouse to prevent jump when switching modes
+        app->firstMouse_ = true;
     }
+    app->graveKeyPressed_ = gravePressed;
+
+    if (hPressed && !app->hKeyPressed_) {
+        app->settings_->setUseHeatmap(!app->settings_->getUseHeatmap());
+    }
+    app->hKeyPressed_ = hPressed;
 }
 
 void Application::errorCallback(int error, const char* description) {
