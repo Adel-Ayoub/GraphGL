@@ -104,9 +104,9 @@ $(TARGET): $(BUILD_DIR) $(OBJECTS) $(GLAD_OBJ) $(IMGUI_OBJECTS)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
-# Compile GLAD
+# Compile GLAD (C file, use CC with CFLAGS)
 $(GLAD_OBJ): $(GLAD_SRC)
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # Compile ImGui sources
 $(BUILD_DIR)/imgui_%.o: $(LIB_DIR)/imgui/%.cpp

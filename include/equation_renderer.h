@@ -2,6 +2,7 @@
 
 #include "equation.h"
 #include "shader.h"
+#include <glm/glm.hpp>
 #include <vector>
 #include <memory>
 
