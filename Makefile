@@ -19,7 +19,7 @@ SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS = $(SOURCES:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 
 # GLAD source
-GLAD_SRC = $(LIB_DIR)/glad.c
+GLAD_SRC = $(LIB_DIR)/glad/glad.c
 GLAD_OBJ = $(BUILD_DIR)/glad.o
 
 # ImGui sources
@@ -28,15 +28,17 @@ IMGUI_SOURCES = $(LIB_DIR)/imgui/imgui.cpp \
                 $(LIB_DIR)/imgui/imgui_draw.cpp \
                 $(LIB_DIR)/imgui/imgui_tables.cpp \
                 $(LIB_DIR)/imgui/imgui_widgets.cpp \
-                $(LIB_DIR)/imgui/imgui_impl_glfw.cpp \
-                $(LIB_DIR)/imgui/imgui_impl_opengl3.cpp
+                $(LIB_DIR)/imgui/backends/imgui_impl_glfw.cpp \
+                $(LIB_DIR)/imgui/backends/imgui_impl_opengl3.cpp
 
-IMGUI_OBJECTS = $(IMGUI_SOURCES:$(LIB_DIR)/imgui/%.cpp=$(BUILD_DIR)/imgui_%.o)
+IMGUI_OBJECTS = $(patsubst $(LIB_DIR)/imgui/%.cpp,$(BUILD_DIR)/imgui_%.o,$(IMGUI_SOURCES))
 
 # Include directories
 INCLUDES = -I$(INCLUDE_DIR) \
-           -I$(LIB_DIR)/include \
+           -I$(LIB_DIR)/glad/include \
            -I$(LIB_DIR)/imgui \
+           -I$(LIB_DIR)/exprtk \
+           -I$(LIB_DIR)/stb \
            -I$(LIB_DIR)
 
 # Library paths and libraries
@@ -88,6 +90,7 @@ $(GLAD_OBJ): $(GLAD_SRC)
 
 # Compile ImGui sources
 $(BUILD_DIR)/imgui_%.o: $(LIB_DIR)/imgui/%.cpp
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 # Clean build artifacts

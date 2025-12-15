@@ -1,5 +1,5 @@
 #include "equation_parser.h"
-#include "../lib/exprtk.hpp"
+#include "../lib/exprtk/exprtk.hpp"
 #include <iostream>
 #include <cmath>
 

@@ -31,6 +31,12 @@ Makefile.cmake
 # Test directory (reference implementation)
 test/
 
+# Git submodules (tracked but ignore their build artifacts)
+lib/imgui/*.o
+lib/imgui/*.a
+lib/exprtk/*.o
+lib/stb/*.o
+
 # ImGui config
 imgui.ini
 
