@@ -37,6 +37,7 @@ private:
     
     std::vector<glm::vec3> vertices_;
     std::vector<unsigned int> indices_;
+    size_t equationVertexCount_; // vec3 entries belonging to equations (before points).
     
     bool initialized_;
 

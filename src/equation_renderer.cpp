@@ -4,10 +4,15 @@
 
 namespace graphgl {
 
+// Each vertex is position (vec3) + color (vec3) = 6 floats.
+constexpr size_t kFloatsPerVertex = 6;
+constexpr size_t kVertexStride = kFloatsPerVertex * sizeof(float);
+
 EquationRenderer::EquationRenderer()
     : VAO_(0)
     , VBO_(0)
     , EBO_(0)
+    , equationVertexCount_(0)
     , initialized_(false)
 {
 }
@@ -48,7 +53,8 @@ void EquationRenderer::updateVertices(const std::vector<Equation>& equations,
         }
     }
 
-    // Add point vertices
+    equationVertexCount_ = vertexOffset;
+
     for (const auto& point : points) {
         vertices_.insert(vertices_.end(),
                         point.vertexData.begin(),
@@ -104,12 +110,11 @@ void EquationRenderer::render(const Shader& shader, bool useHeatmap,
                       0);
     }
 
-    // Draw points for remaining vertices
-    size_t pointStartIndex = indices_.empty() ? 0 : vertices_.size() - indices_.size();
-    if (pointStartIndex < vertices_.size()) {
+    // Each vertex is 2 vec3 entries (position + color), so divide by 2 for GL vertex indices.
+    if (equationVertexCount_ < vertices_.size()) {
         glDrawArrays(GL_POINTS,
-                    static_cast<GLsizei>(pointStartIndex / 2),
-                    static_cast<GLsizei>((vertices_.size() - pointStartIndex) / 2));
+                    static_cast<GLsizei>(equationVertexCount_ / 2),
+                    static_cast<GLsizei>((vertices_.size() - equationVertexCount_) / 2));
     }
 
     glBindVertexArray(0);
