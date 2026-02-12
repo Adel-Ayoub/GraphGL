@@ -146,51 +146,63 @@ int Shader::getUniformLocation(const std::string& name) const {
 }
 
 void Shader::setBool(const std::string& name, bool value) const {
-    glUniform1i(getUniformLocation(name), static_cast<int>(value));
+    int loc = getUniformLocation(name);
+    if (loc != -1) glUniform1i(loc, static_cast<int>(value));
 }
 
 void Shader::setInt(const std::string& name, int value) const {
-    glUniform1i(getUniformLocation(name), value);
+    int loc = getUniformLocation(name);
+    if (loc != -1) glUniform1i(loc, value);
 }
 
 void Shader::setFloat(const std::string& name, float value) const {
-    glUniform1f(getUniformLocation(name), value);
+    int loc = getUniformLocation(name);
+    if (loc != -1) glUniform1f(loc, value);
 }
 
 void Shader::setVec2(const std::string& name, const glm::vec2& value) const {
-    glUniform2fv(getUniformLocation(name), 1, glm::value_ptr(value));
+    int loc = getUniformLocation(name);
+    if (loc != -1) glUniform2fv(loc, 1, glm::value_ptr(value));
 }
 
 void Shader::setVec2(const std::string& name, float x, float y) const {
-    glUniform2f(getUniformLocation(name), x, y);
+    int loc = getUniformLocation(name);
+    if (loc != -1) glUniform2f(loc, x, y);
 }
 
 void Shader::setVec3(const std::string& name, const glm::vec3& value) const {
-    glUniform3fv(getUniformLocation(name), 1, glm::value_ptr(value));
+    int loc = getUniformLocation(name);
+    if (loc != -1) glUniform3fv(loc, 1, glm::value_ptr(value));
 }
 
 void Shader::setVec3(const std::string& name, float x, float y, float z) const {
-    glUniform3f(getUniformLocation(name), x, y, z);
+    int loc = getUniformLocation(name);
+    if (loc != -1) glUniform3f(loc, x, y, z);
 }
 
 void Shader::setVec4(const std::string& name, const glm::vec4& value) const {
-    glUniform4fv(getUniformLocation(name), 1, glm::value_ptr(value));
+    int loc = getUniformLocation(name);
+    if (loc != -1) glUniform4fv(loc, 1, glm::value_ptr(value));
 }
 
 void Shader::setVec4(const std::string& name, float x, float y, float z, float w) const {
-    glUniform4f(getUniformLocation(name), x, y, z, w);
+    int loc = getUniformLocation(name);
+    if (loc != -1) glUniform4f(loc, x, y, z, w);
 }
 
 void Shader::setMat2(const std::string& name, const glm::mat2& mat) const {
-    glUniformMatrix2fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat));
+    int loc = getUniformLocation(name);
+    if (loc != -1) glUniformMatrix2fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
 void Shader::setMat3(const std::string& name, const glm::mat3& mat) const {
-    glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat));
+    int loc = getUniformLocation(name);
+    if (loc != -1) glUniformMatrix3fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
 void Shader::setMat4(const std::string& name, const glm::mat4& mat) const {
-    glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat));
+    int loc = getUniformLocation(name);
+    if (loc != -1) glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
 } // namespace graphgl
