@@ -78,41 +78,33 @@ bool DataManager::exportData(const std::string& filename,
 }
 
 void DataManager::parseEquationLine(const std::string& line, Equation& eq) const {
-    std::istringstream iss(line);
-    std::string type;
-    iss >> type;
+    // Fields are wrapped in quotes by exportData, so we parse from within them.
+    size_t firstQuote = line.find('"');
+    size_t lastQuote = line.rfind('"');
 
-    if (type != "Equation") {
+    if (firstQuote == std::string::npos || lastQuote == std::string::npos || firstQuote == lastQuote) {
+        std::cerr << "Invalid equation line format: " << line << std::endl;
         return;
     }
 
-    // Parse color
+    std::string content = line.substr(firstQuote + 1, lastQuote - firstQuote - 1);
+    std::istringstream iss(content);
+
     iss >> eq.color[0] >> eq.color[1] >> eq.color[2];
-    
-    // Parse sample size
     iss >> eq.sampleSize;
-    
-    // Parse domain
     iss >> eq.minX >> eq.maxX >> eq.minY >> eq.maxY;
     
-    // Parse visibility and 3D flag
     int visible, is3D;
     iss >> visible >> is3D;
     eq.isVisible = (visible != 0);
     eq.is3D = (is3D != 0);
 
-    // Parse expression (everything after the quotes)
-    std::string buf;
-    std::getline(iss, buf);
-    
-    // Remove quotes
-    buf = removeQuotes(buf);
-    
-    // Trim whitespace
-    buf.erase(0, buf.find_first_not_of(" \t"));
-    buf.erase(buf.find_last_not_of(" \t") + 1);
-    
-    eq.expression = buf;
+    // Expression is the remaining content after the numeric fields.
+    std::string expr;
+    std::getline(iss, expr);
+    expr.erase(0, expr.find_first_not_of(" \t"));
+    expr.erase(expr.find_last_not_of(" \t") + 1);
+    eq.expression = expr;
 }
 
 void DataManager::parsePointLine(const std::string& line, Point& pt) const {
