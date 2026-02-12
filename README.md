@@ -1,6 +1,6 @@
 # GraphGL
 
-A interactive 2D/3D equation graphing application built with C++ and OpenGL.
+An interactive 2D/3D equation graphing application built with C++ and OpenGL.
 
 ## Screenshots
 
