@@ -36,6 +36,9 @@ public:
     /// Enter the render/input loop until the window is closed.
     void run();
 
+    /// Import equations/points from a .mat file (for CLI --file flag).
+    void importFile(const std::string& filename);
+
     bool shouldClose() const;
 
     GLFWwindow* getWindow() const { return window_; }

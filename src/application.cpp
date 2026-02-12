@@ -406,6 +406,10 @@ void Application::onPointAdd() {
     points_.emplace_back();
 }
 
+void Application::importFile(const std::string& filename) {
+    onImport(filename);
+}
+
 void Application::onImport(const std::string& filename) {
     if (!dataManager_) {
         return;
