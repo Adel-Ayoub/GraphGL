@@ -15,10 +15,8 @@ public:
     EquationParser(const EquationParser&) = delete;
     EquationParser& operator=(const EquationParser&) = delete;
 
-    // Parse and validate expression
-    bool parseExpression(const std::string& expression, bool is3D = true);
+    [[nodiscard]] bool parseExpression(const std::string& expression, bool is3D = true);
 
-    // Evaluate expression at given point
     float evaluate(float x, float y = 0.0f) const;
 
     // Check if parser is ready
@@ -33,7 +31,6 @@ private:
     bool isValid_;
     std::string errorMessage_;
 
-    void setupSymbolTable();
 };
 
 } // namespace graphgl

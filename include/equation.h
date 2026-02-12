@@ -21,7 +21,6 @@ struct Equation {
     float opacity = 1.0f;
     bool isMesh = false;
     std::vector<unsigned int> indices;
-    float discontinuityThreshold = 10.0f;
 };
 
 struct Point {
