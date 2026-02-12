@@ -95,6 +95,8 @@ void UIController::renderMainWindow() {
         }
     }
 
+    renderPresets();
+
     // Display stats
     ImGui::Text("Camera Position: %s", glm::to_string(camera_->getPosition()).c_str());
     
@@ -211,7 +213,8 @@ void UIController::renderControlsPopup() {
         ImGui::Text("I: reset position to (0,0,12)");
         ImGui::Text("`: mouse look toggle (cursor lock)");
         ImGui::Text("TAB/M: fallback mouse look toggle");
-        ImGui::Text("H: toggle heatmap  |  Escape: quit");
+        ImGui::Text("H: toggle heatmap  |  F12: screenshot");
+        ImGui::Text("Escape: quit");
         ImGui::Separator();
         
         if (ImGui::Button("Close")) {
@@ -341,6 +344,42 @@ void UIController::renderPointInput(Point& point, size_t index) {
         if (onPointRender_) {
             onPointRender_(point, index);
         }
+    }
+}
+
+void UIController::renderPresets() {
+    if (!equations_ || !onEquationAdd_ || !onEquationRender_) {
+        return;
+    }
+
+    struct Preset {
+        const char* name;
+        const char* expression;
+        bool is3D;
+    };
+
+    static const Preset presets[] = {
+        {"Sine Wave",    "sin(x)",           false},
+        {"Parabola",     "x^2",              false},
+        {"Circle (top)", "sqrt(25 - x^2)",   false},
+        {"Ripple",       "sin(sqrt(x^2 + y^2))", true},
+        {"Saddle",       "x^2 - y^2",        true},
+        {"Hemisphere",   "sqrt(25 - x^2 - y^2)", true},
+        {"Waves",        "sin(x) * cos(y)",  true},
+        {"Egg Carton",   "sin(x) + sin(y)",  true},
+    };
+
+    if (ImGui::TreeNode("Presets")) {
+        for (const auto& p : presets) {
+            if (ImGui::Button(p.name)) {
+                onEquationAdd_();
+                auto& eq = equations_->back();
+                eq.expression = p.expression;
+                eq.is3D = p.is3D;
+                onEquationRender_(eq, equations_->size() - 1);
+            }
+        }
+        ImGui::TreePop();
     }
 }
 

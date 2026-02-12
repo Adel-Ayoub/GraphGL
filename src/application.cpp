@@ -11,6 +11,7 @@
 #include "equation_generator.h"
 #include "equation.h"
 #include "resource_path.h"
+#include "screenshot.h"
 #include "../lib/imgui/imgui.h"
 #include "../lib/imgui/backends/imgui_impl_glfw.h"
 #include "../lib/imgui/backends/imgui_impl_opengl3.h"
@@ -541,6 +542,8 @@ void Application::keyCallback(GLFWwindow* window, int key, int scancode, int act
             glfwSetInputMode(window, GLFW_CURSOR, app->mouseFocus_ ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
         } else if (key == GLFW_KEY_H) {
             app->settings_->setUseHeatmap(!app->settings_->getUseHeatmap());
+        } else if (key == GLFW_KEY_F12) {
+            saveScreenshot("screenshot", app->width_, app->height_);
         }
     }
 }
