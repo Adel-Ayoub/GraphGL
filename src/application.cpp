@@ -10,6 +10,7 @@
 #include "equation_parser.h"
 #include "equation_generator.h"
 #include "equation.h"
+#include "resource_path.h"
 #include "../lib/imgui/imgui.h"
 #include "../lib/imgui/backends/imgui_impl_glfw.h"
 #include "../lib/imgui/backends/imgui_impl_opengl3.h"
@@ -112,7 +113,9 @@ bool Application::initialize(int width, int height, const char* title) {
     camera_ = std::make_unique<Camera>(glm::vec3(0.0f, kDefaultCameraHeight, kDefaultCameraDistance));
 
     try {
-        shader_ = std::make_unique<Shader>("shaders/shader.vs", "shaders/shader.fs");
+        std::string vsPath = resolveResourcePath("shaders/shader.vs");
+        std::string fsPath = resolveResourcePath("shaders/shader.fs");
+        shader_ = std::make_unique<Shader>(vsPath, fsPath);
     } catch (const std::exception& e) {
         std::cerr << "Failed to load shaders: " << e.what() << std::endl;
         return false;
