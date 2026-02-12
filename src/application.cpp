@@ -20,6 +20,10 @@
 
 namespace graphgl {
 
+constexpr float kNearPlane = 0.1f;
+constexpr float kDefaultCameraHeight = 6.0f;
+constexpr float kDefaultCameraDistance = 12.0f;
+
 Application::Application()
     : window_(nullptr)
     , width_(1280)
@@ -105,7 +109,7 @@ bool Application::initialize(int width, int height, const char* title) {
     settings_->setWidth(width_);
     settings_->setHeight(height_);
 
-    camera_ = std::make_unique<Camera>(glm::vec3(0.0f, 6.0f, 12.0f));
+    camera_ = std::make_unique<Camera>(glm::vec3(0.0f, kDefaultCameraHeight, kDefaultCameraDistance));
 
     try {
         shader_ = std::make_unique<Shader>("shaders/shader.vs", "shaders/shader.fs");
@@ -275,7 +279,7 @@ void Application::render() {
     glm::mat4 projection = glm::perspective(
         glm::radians(camera_->getZoom()),
         static_cast<float>(width_) / static_cast<float>(height_),
-        0.1f,
+        kNearPlane,
         settings_->getMaxViewDistance()
     );
     shader_->setMat4("projection", projection);
