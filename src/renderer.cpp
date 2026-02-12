@@ -29,9 +29,9 @@ void Renderer::clear(float r, float g, float b, float a) const {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::setViewport(int x, int y, int width, int height) const {
+void Renderer::setViewport(int x, int y, int width, int height) {
     glViewport(x, y, width, height);
-    const_cast<Renderer*>(this)->viewportSize_ = glm::ivec2(width, height);
+    viewportSize_ = glm::ivec2(width, height);
 }
 
 } // namespace graphgl

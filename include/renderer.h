@@ -26,8 +26,7 @@ public:
     // Clear the screen
     void clear(float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 1.0f) const;
 
-    // Set viewport
-    void setViewport(int x, int y, int width, int height) const;
+    void setViewport(int x, int y, int width, int height);
 
     // Get viewport dimensions
     glm::ivec2 getViewportSize() const { return viewportSize_; }
