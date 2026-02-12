@@ -15,14 +15,18 @@ public:
 
     [[nodiscard]] bool importData(const std::string& filename, 
                                   std::vector<Equation>& equations,
-                                  std::vector<Point>& points) const;
+                                  std::vector<Point>& points);
 
     [[nodiscard]] bool exportData(const std::string& filename,
                                   const std::vector<Equation>& equations,
-                                  const std::vector<Point>& points) const;
+                                  const std::vector<Point>& points);
+
+    /// Returns a human-readable message after a failed import/export.
+    std::string getLastError() const { return lastError_; }
 
 private:
-    // Helper functions
+    std::string lastError_;
+
     std::string removeQuotes(const std::string& str) const;
     void parseEquationLine(const std::string& line, Equation& eq) const;
     void parsePointLine(const std::string& line, Point& pt) const;

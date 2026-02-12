@@ -7,11 +7,12 @@ namespace graphgl {
 
 bool DataManager::importData(const std::string& filename,
                             std::vector<Equation>& equations,
-                            std::vector<Point>& points) const {
+                            std::vector<Point>& points) {
+    lastError_.clear();
     std::ifstream infile(filename);
     
     if (!infile.is_open()) {
-        std::cerr << "Failed to open file: " << filename << std::endl;
+        lastError_ = "Failed to open file: " + filename;
         return false;
     }
 
@@ -42,7 +43,8 @@ bool DataManager::importData(const std::string& filename,
 
 bool DataManager::exportData(const std::string& filename,
                             const std::vector<Equation>& equations,
-                            const std::vector<Point>& points) const {
+                            const std::vector<Point>& points) {
+    lastError_.clear();
     std::string filepath = filename;
     if (filepath.find(".mat") == std::string::npos) {
         filepath += ".mat";
@@ -51,7 +53,7 @@ bool DataManager::exportData(const std::string& filename,
     std::ofstream outfile(filepath);
     
     if (!outfile.is_open()) {
-        std::cerr << "Failed to create file: " << filepath << std::endl;
+        lastError_ = "Failed to create file: " + filepath;
         return false;
     }
 
