@@ -245,7 +245,8 @@ void UIController::renderEquationInput(Equation& equation, size_t index) {
         return;
     }
 
-    char buf[256];
+    // 1024 avoids silent truncation for complex expressions.
+    char buf[1024];
     std::strncpy(buf, equation.expression.c_str(), sizeof(buf) - 1);
     buf[sizeof(buf) - 1] = '\0';
 
