@@ -86,8 +86,26 @@ else
     CXXFLAGS += $(DEBUG_FLAGS)
 endif
 
+# Google Test
+GTEST_DIR = $(LIB_DIR)/googletest/googletest
+GTEST_INCLUDES = -I$(GTEST_DIR)/include -I$(GTEST_DIR)
+GTEST_OBJ = $(BUILD_DIR)/gtest-all.o
+GTEST_MAIN_OBJ = $(BUILD_DIR)/gtest_main.o
+
+# Test files
+TEST_DIR = tests
+TEST_SOURCES = $(wildcard $(TEST_DIR)/*.cpp)
+TEST_OBJECTS = $(patsubst $(TEST_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(TEST_SOURCES))
+
+# Only the non-OpenGL source objects needed by tests.
+TEST_SRC_OBJECTS = $(BUILD_DIR)/settings.o \
+                   $(BUILD_DIR)/equation_parser.o \
+                   $(BUILD_DIR)/equation_generator.o \
+                   $(BUILD_DIR)/data_manager.o
+
 # Executable name
 TARGET = $(BUILD_DIR)/graphgl
+TEST_TARGET = $(BUILD_DIR)/graphgl_tests
 
 # Default target
 all: $(TARGET)
@@ -144,6 +162,7 @@ help:
 	@echo "  all       - Build the project (default, debug mode)"
 	@echo "  debug     - Build in debug mode"
 	@echo "  release   - Build in release mode"
+	@echo "  test      - Build and run unit tests"
 	@echo "  clean     - Remove build artifacts"
 	@echo "  run       - Build and run the program"
 	@echo "  help      - Show this help message"
@@ -153,5 +172,29 @@ help:
 	@echo "  make BUILD_MODE=release - Build in release mode"
 	@echo "  make clean        - Clean build files"
 
-.PHONY: all clean install run help
+# --- Test targets ---
+
+# Compile Google Test library.
+$(GTEST_OBJ): $(GTEST_DIR)/src/gtest-all.cc
+	@mkdir -p $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) $(GTEST_INCLUDES) -c $< -o $@
+
+$(GTEST_MAIN_OBJ): $(GTEST_DIR)/src/gtest_main.cc
+	@mkdir -p $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) $(GTEST_INCLUDES) -c $< -o $@
+
+# Compile test source files.
+$(BUILD_DIR)/%.o: $(TEST_DIR)/%.cpp
+	@mkdir -p $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(GTEST_INCLUDES) -MMD -MP -c $< -o $@
+
+# Link test runner. Tests don't use OpenGL/GLFW, so we skip GLAD, ImGui, and GL libs.
+$(TEST_TARGET): $(BUILD_DIR) $(TEST_SRC_OBJECTS) $(TEST_OBJECTS) $(GTEST_OBJ) $(GTEST_MAIN_OBJ)
+	$(CXX) $(TEST_SRC_OBJECTS) $(TEST_OBJECTS) $(GTEST_OBJ) $(GTEST_MAIN_OBJ) -lpthread -o $(TEST_TARGET)
+	@echo "Test build complete: $(TEST_TARGET)"
+
+test: $(TEST_TARGET)
+	./$(TEST_TARGET)
+
+.PHONY: all clean install run help test
 
