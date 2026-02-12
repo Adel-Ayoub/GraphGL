@@ -8,16 +8,16 @@
 
 namespace graphgl {
 
+/// Produces vertex data for equations using adaptive subdivision sampling.
 class EquationGenerator {
 public:
     EquationGenerator();
     ~EquationGenerator() = default;
 
-    // Generate vertices for an equation
+    /// Populate equation.vertices (and indices for meshes) from the parsed expression.
     void generateVertices(Equation& equation, EquationParser& parser, 
                           int maxDepth = 6, double derivativeThreshold = 5.0);
 
-    // Get min/max height values from last generation
     float getMinHeight() const { return minHeight_; }
     float getMaxHeight() const { return maxHeight_; }
 

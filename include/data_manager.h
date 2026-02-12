@@ -7,6 +7,7 @@
 
 namespace graphgl {
 
+/// Reads and writes equations/points in the .mat plain-text format.
 class DataManager {
 public:
     DataManager() = default;

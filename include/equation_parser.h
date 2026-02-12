@@ -6,23 +6,22 @@
 
 namespace graphgl {
 
+/// Wraps ExprTk behind a PIMPL to parse and evaluate math expressions.
 class EquationParser {
 public:
     EquationParser();
     ~EquationParser();
 
-    // Delete copy constructor and assignment
     EquationParser(const EquationParser&) = delete;
     EquationParser& operator=(const EquationParser&) = delete;
 
+    /// Compile an expression string. Returns false on syntax errors.
     [[nodiscard]] bool parseExpression(const std::string& expression, bool is3D = true);
 
+    /// Evaluate the last compiled expression at (x, y).
     float evaluate(float x, float y = 0.0f) const;
 
-    // Check if parser is ready
     bool isValid() const { return isValid_; }
-
-    // Get error message if parsing failed
     std::string getErrorMessage() const { return errorMessage_; }
 
 private:

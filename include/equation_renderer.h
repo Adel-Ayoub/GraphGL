@@ -8,25 +8,23 @@
 
 namespace graphgl {
 
+/// Manages OpenGL buffers and draw calls for equation curves, surfaces, and points.
 class EquationRenderer {
 public:
     EquationRenderer();
     ~EquationRenderer();
 
-    // Delete copy constructor and assignment
     EquationRenderer(const EquationRenderer&) = delete;
     EquationRenderer& operator=(const EquationRenderer&) = delete;
 
-    // Initialize renderer
     void initialize();
 
-    // Update vertex data for equations
+    /// Re-upload vertex/index data from the current equations and points.
     void updateVertices(const std::vector<Equation>& equations, const std::vector<Point>& points);
 
-    // Render equations
+    /// Issue draw calls for meshes (indexed) and standalone points.
     void render(const Shader& shader, bool useHeatmap, float minHeight, float maxHeight) const;
 
-    // Get vertex count
     size_t getVertexCount() const { return vertices_.size(); }
     size_t getIndexCount() const { return indices_.size(); }
 

@@ -9,26 +9,20 @@
 
 namespace graphgl {
 
+/// Loads, compiles, and links a vertex+fragment shader program. Move-only.
 class Shader {
 public:
-    // Constructor - loads and compiles shaders from files
     Shader(const std::string& vertexPath, const std::string& fragmentPath);
-    
-    // Destructor - cleans up OpenGL resources
     ~Shader();
-    
-    // Delete copy constructor and assignment (use move instead)
+
     Shader(const Shader&) = delete;
     Shader& operator=(const Shader&) = delete;
-    
-    // Move constructor and assignment
+
     Shader(Shader&& other) noexcept;
     Shader& operator=(Shader&& other) noexcept;
-    
-    // Use the shader program
+
     void use() const;
-    
-    // Uniform setters
+
     void setBool(const std::string& name, bool value) const;
     void setInt(const std::string& name, int value) const;
     void setFloat(const std::string& name, float value) const;
@@ -44,15 +38,11 @@ public:
     void setMat3(const std::string& name, const glm::mat3& mat) const;
     void setMat4(const std::string& name, const glm::mat4& mat) const;
     
-    // Get the shader program ID
     unsigned int getId() const { return id_; }
-    
     [[nodiscard]] bool isValid() const { return id_ != 0; }
 
 private:
     unsigned int id_;
-    
-    // Helper functions
     std::string loadShaderFile(const std::string& filepath) const;
     unsigned int compileShader(const std::string& source, unsigned int type) const;
     unsigned int createProgram(unsigned int vertexShader, unsigned int fragmentShader) const;

@@ -21,28 +21,24 @@ class EquationGenerator;
 struct Equation;
 struct Point;
 
+/// Top-level owner of the window, subsystems, and main loop.
 class Application {
 public:
     Application();
     ~Application();
 
-    // Delete copy constructor and assignment operator
     Application(const Application&) = delete;
     Application& operator=(const Application&) = delete;
 
-    // Initialize the application
+    /// Create the GLFW window, load shaders, and wire subsystems.
     bool initialize(int width = 1280, int height = 720, const char* title = "GraphGL");
 
-    // Run the main loop
+    /// Enter the render/input loop until the window is closed.
     void run();
 
-    // Check if the application should close
     bool shouldClose() const;
 
-    // Get the GLFW window handle
     GLFWwindow* getWindow() const { return window_; }
-
-    // Get window dimensions
     int getWidth() const { return width_; }
     int getHeight() const { return height_; }
 
