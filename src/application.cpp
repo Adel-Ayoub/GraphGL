@@ -299,16 +299,9 @@ void Application::render() {
 
     // Render equations
     equationRenderer_->updateVertices(equations_, points_);
-    
-    // Set color and opacity for each equation
-    for (const auto& equation : equations_) {
-        if (equation.isVisible) {
-            glm::vec3 color(equation.color[0], equation.color[1], equation.color[2]);
-            shader_->setVec3("color", color);
-            shader_->setFloat("point_opacity", equation.opacity);
-        }
-    }
 
+    // NOTE: Per-equation colors are baked into vertex attributes by EquationGenerator.
+    // The color uniform only affects grid/line rendering, not equations.
     equationRenderer_->render(
         *shader_,
         settings_->getUseHeatmap(),
