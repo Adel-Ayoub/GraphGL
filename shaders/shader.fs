@@ -35,7 +35,9 @@ void main()
         FragColor = vec4(color, 1.0);
     }
     else if (use_heatmap) {
-        float normalizedHeight = (heightY - min_height) / (max_height - min_height);
+        // Guard against zero range to avoid NaN when all vertices share the same height.
+        float range = max_height - min_height;
+        float normalizedHeight = (range > 0.0) ? (heightY - min_height) / range : 0.5;
         normalizedHeight = clamp(normalizedHeight, 0.0, 1.0);
         vec3 heatmap_color = computeColor(normalizedHeight);
 
