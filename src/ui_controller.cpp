@@ -223,7 +223,7 @@ void UIController::renderControlsPopup() {
             ImGui::CloseCurrentPopup();
         }
         
-        ImGui::Text("Vertex density might negatively effect performance. Adjust sample size accordingly.");
+        ImGui::Text("Vertex density might negatively affect performance. Adjust sample size accordingly.");
         ImGui::Text("Be sure to change the colour when working with multiple equations.");
 
         ImGui::EndPopup();
