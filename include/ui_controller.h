@@ -89,6 +89,7 @@ private:
     void renderPointInput(Point& point, size_t index);
     void renderEquations();
     void renderPoints();
+    void renderPresets();
 };
 
 } // namespace graphgl
