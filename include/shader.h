@@ -47,8 +47,7 @@ public:
     // Get the shader program ID
     unsigned int getId() const { return id_; }
     
-    // Check if shader is valid
-    bool isValid() const { return id_ != 0; }
+    [[nodiscard]] bool isValid() const { return id_ != 0; }
 
 private:
     unsigned int id_;
