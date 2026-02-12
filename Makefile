@@ -17,6 +17,7 @@ LIB_DIR = lib
 # Source files
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS = $(SOURCES:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+DEPS = $(OBJECTS:.o=.d)
 
 # GLAD source
 GLAD_SRC = $(LIB_DIR)/glad/glad.c
@@ -95,14 +96,17 @@ all: $(TARGET)
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)
 
-# Link executable
+# Link executable and copy runtime resources.
 $(TARGET): $(BUILD_DIR) $(OBJECTS) $(GLAD_OBJ) $(IMGUI_OBJECTS)
 	$(CXX) $(OBJECTS) $(GLAD_OBJ) $(IMGUI_OBJECTS) $(LDFLAGS) $(LIBS) -o $(TARGET)
+	@cp -r $(SHADER_DIR) $(BUILD_DIR)/$(SHADER_DIR)
 	@echo "Build complete: $(TARGET)"
 
-# Compile source files
+# Compile source files (with automatic header dependency tracking)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
+
+-include $(DEPS)
 
 # Compile GLAD (C file, use CC with CFLAGS)
 $(GLAD_OBJ): $(GLAD_SRC)
@@ -118,9 +122,14 @@ clean:
 	rm -rf $(BUILD_DIR)
 	@echo "Clean complete"
 
-# Install target (optional)
+# Install target
+PREFIX ?= /usr/local
 install: $(TARGET)
-	@echo "Install target not implemented"
+	install -d $(PREFIX)/bin
+	install -m 755 $(TARGET) $(PREFIX)/bin/graphgl
+	install -d $(PREFIX)/share/graphgl/shaders
+	install -m 644 $(SHADER_DIR)/* $(PREFIX)/share/graphgl/shaders/
+	@echo "Installed to $(PREFIX)"
 
 # Run the program
 run: $(TARGET)
