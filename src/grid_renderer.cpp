@@ -12,6 +12,8 @@ GridRenderer::GridRenderer()
     , VBO_axes_(0)
     , gridVertexCount_(0)
     , axesVertexCount_(6)
+    , currentGridSize_(0.0f)
+    , currentGridSpacing_(0.0f)
     , gridLinesVisible_(true)
     , axesVisible_(true)
     , initialized_(false)
@@ -29,7 +31,18 @@ void GridRenderer::initialize(float gridSize, float gridSpacing) {
 
     setupGridBuffers(gridSize, gridSpacing);
     setupAxesBuffers();
+    currentGridSize_ = gridSize;
+    currentGridSpacing_ = gridSpacing;
     initialized_ = true;
+}
+
+void GridRenderer::update(float gridSize, float gridSpacing) {
+    if (gridSize == currentGridSize_ && gridSpacing == currentGridSpacing_) {
+        return;
+    }
+    setupGridBuffers(gridSize, gridSpacing);
+    currentGridSize_ = gridSize;
+    currentGridSpacing_ = gridSpacing;
 }
 
 void GridRenderer::renderGridLines(const Shader& shader) const {

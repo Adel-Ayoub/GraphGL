@@ -14,13 +14,12 @@ public:
     GridRenderer(const GridRenderer&) = delete;
     GridRenderer& operator=(const GridRenderer&) = delete;
 
-    // Initialize grid renderer
     void initialize(float gridSize = 1000.0f, float gridSpacing = 1.0f);
 
-    // Render grid lines
-    void renderGridLines(const Shader& shader) const;
+    /// Rebuild grid geometry if the parameters have changed.
+    void update(float gridSize, float gridSpacing);
 
-    // Render axes
+    void renderGridLines(const Shader& shader) const;
     void renderAxes(const Shader& shader) const;
 
     // Set visibility
@@ -39,6 +38,8 @@ private:
     int gridVertexCount_;
     int axesVertexCount_;
     
+    float currentGridSize_;
+    float currentGridSpacing_;
     bool gridLinesVisible_;
     bool axesVisible_;
     bool initialized_;
