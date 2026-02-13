@@ -151,23 +151,26 @@ Point 0 5 0 1 0 0
 
 ## Architecture
 
-```
-src/
-├── main.cpp               Entry point and CLI argument parsing
-├── application.cpp         Main loop, input, subsystem wiring
-├── camera.cpp              3D camera (orbit, pan, zoom)
-├── renderer.cpp            Base OpenGL renderer
-├── equation_renderer.cpp   Equation/point draw calls
-├── grid_renderer.cpp       Grid and axis overlay
-├── equation_parser.cpp     Expression parsing (ExprTk, PIMPL)
-├── equation_generator.cpp  Adaptive sampling and vertex generation
-├── data_manager.cpp        Import/export .mat files
-├── ui_controller.cpp       ImGui panels and callbacks
-├── settings.cpp            Rendering and UI options
-├── shader.cpp              Shader loading and uniform management
-├── resource_path.cpp       Executable-relative path resolution
-└── screenshot.cpp          Viewport capture to PNG
-```
+![Architecture flowchart](assets/architecture.svg)
+
+### Source Files
+
+| File | Purpose |
+|------|---------|
+| `main.cpp` | Entry point and CLI argument parsing |
+| `application.cpp` | Main loop, input, subsystem wiring |
+| `camera.cpp` | 3D camera (orbit, pan, zoom) |
+| `renderer.cpp` | Base OpenGL renderer |
+| `equation_renderer.cpp` | Equation/point draw calls |
+| `grid_renderer.cpp` | Grid and axis overlay |
+| `equation_parser.cpp` | Expression parsing (ExprTk, PIMPL) |
+| `equation_generator.cpp` | Adaptive sampling and vertex generation |
+| `data_manager.cpp` | Import/export .mat files |
+| `ui_controller.cpp` | ImGui panels and callbacks |
+| `settings.cpp` | Rendering and UI options |
+| `shader.cpp` | Shader loading and uniform management |
+| `resource_path.cpp` | Executable-relative path resolution |
+| `screenshot.cpp` | Viewport capture to PNG |
 
 ---
 
